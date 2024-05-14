@@ -1,0 +1,10 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: python-example-app
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "pythonapp"
+    dapr.io/enable-api-logging: "true"
+containers:
+  pythonapp:
+    image: ghcr.io/dapr/samples/hello-k8s-python:latest

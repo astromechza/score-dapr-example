@@ -1,0 +1,18 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: node-example-app
+  annotations:        
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "nodeapp"
+    dapr.io/app-port: "3000"
+    dapr.io/enable-api-logging: "true"
+containers:
+  nodeapp:
+    image: ghcr.io/dapr/samples/hello-k8s-node:latest
+    variables:
+      APP_PORT: "3000"
+      STATE_STORE_NAME: "${resources.state-store.name}"
+resources:
+  state-store:
+    type: dapr-state-store
+    class: redis
