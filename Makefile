@@ -21,6 +21,12 @@ help:
 	score-k8s init --no-sample
 
 compose.yaml: score-node.yaml score-python.yaml .score-compose/state.yaml Makefile
+ifeq (, $(shell which score-compose))
+	$(error "No score-compose in $$PATH, please follow https://docs.score.dev/docs/get-started/install/")
+endif
+ifneq (, $(shell [[ "$(shell score-compose --version)" =~ "0\.(\d\.|11\.|12\.|13\.|14\.|15.0)" ]] && echo matched))
+	$(error "Version of score-compose is too old, please follow https://docs.score.dev/docs/get-started/install/")
+endif
 	score-compose generate score-node.yaml --build='nodeapp={"context": "./node"}'
 	score-compose generate score-python.yaml --build='pythonapp={"context": "./python"}'
 	yq --inplace '(.services) += (.services |																		\
@@ -42,6 +48,12 @@ compose.yaml: score-node.yaml score-python.yaml .score-compose/state.yaml Makefi
 	yq --inplace '.services.placement = {"image": "daprio/dapr", "command": ["./placement", "-port", "50006"], "ports": ["50006:50006"]}' compose.yaml
 
 manifests.yaml: score-node.yaml score-python.yaml .score-k8s/state.yaml .score-k8s/00-custom.provisioners.yaml
+ifeq (, $(shell which score-k8s))
+	$(error "No score-k8s in $$PATH, please follow https://docs.score.dev/docs/get-started/install/")
+endif
+ifneq (, $(shell [[ "$(shell score-k8s --version)" =~ "0\.(1\.[01])" ]] && echo matched))
+	$(error "Version of score-k8s is too old, please follow https://docs.score.dev/docs/get-started/install/")
+endif
 	score-k8s generate score-node.yaml score-python.yaml
 
 # ------------------------------------------------------------------------------
