@@ -1,6 +1,6 @@
 apiVersion: score.dev/v1b1
 metadata:
-  name: node-example-app
+  name: nodeapp
   annotations:        
     dapr.io/enabled: "true"
     dapr.io/app-id: "nodeapp"

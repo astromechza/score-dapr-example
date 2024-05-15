@@ -2,10 +2,9 @@
   type: dapr-state-store
   class: redis
   init: |
-    randomServiceName: redis-{{ randAlphaNum 6 | lower }}
     randomPassword: {{ randAlphaNum 16 | quote }}
   state: |
-    service: {{ dig "service" .Init.randomServiceName .State | quote }}
+    service: redis-{{ .SourceWorkload }}-{{ substr 0 8 .Guid | lower }}
     username: default
     password: {{ dig "password" .Init.randomPassword .State | quote }}
   outputs: |
@@ -20,12 +19,13 @@
         version: v1
         metadata:
         - name: redisHost
-          value: {{ .State.service }}:{{ .Init.port }}
+          value: {{ .State.service }}:6379
         - name: redisPassword
           secretKeyRef:
             name: {{ .State.service }}
             key: password
-      secretStore: kubernetes
+      auth:
+        secretStore: kubernetes
     - apiVersion: v1
       kind: Secret
       metadata:

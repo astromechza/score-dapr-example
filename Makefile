@@ -41,7 +41,7 @@ compose.yaml: score-node.yaml score-python.yaml .score-compose/state.yaml Makefi
 		}))' compose.yaml
 	yq --inplace '.services.placement = {"image": "daprio/dapr", "command": ["./placement", "-port", "50006"], "ports": ["50006:50006"]}' compose.yaml
 
-manifests.yaml: score-node.yaml score-python.yaml .score-k8s/state.yaml
+manifests.yaml: score-node.yaml score-python.yaml .score-k8s/state.yaml .score-k8s/00-custom.provisioners.yaml
 	score-k8s generate score-node.yaml score-python.yaml
 
 # ------------------------------------------------------------------------------
