@@ -148,4 +148,10 @@ Successfully persisted state for Order ID: 201
 
 ## FAQ
 
-...
+### How would I deploy this through Humanitec?
+
+Until Humanitec supports custom resource types, you will need to replace the `dapr-state-store` type in the nodeapp Score file with the generic `config` type and a dapr-specific class.
+
+Then add a resource definition for the type/class combination to return the name of the Dapr state store in your cluster. To be more advanced, use co-provisioning to provision a Redis and Dapr component manifest at the same time.
+
+Deploy the Score files through Humanitec using either https://developer.humanitec.com/score/getting-started/managed-by-score/ or the `humctl` cli (humctl score deploy ..).
