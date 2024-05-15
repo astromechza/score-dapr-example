@@ -35,8 +35,8 @@ endif
 			"image": "daprio/daprd:latest", 																		\
 			"command": [																							\
 				"./daprd",																							\
-				"--app-id=" + ($$e.value.annotations."dapr.io/app-id" // error("missing app-id annotation")),		\
-				"--app-port=" + ($$e.value.annotations."dapr.io/app-port" // ""),									\
+				("--app-id=" + ($$e.value.annotations."dapr.io/app-id" // error("missing app-id annotation"))),		\
+				("--app-port=" + ($$e.value.annotations."dapr.io/app-port" // "")),									\
 				("--enable-api-logging=" + ($$e.value.annotations."dapr.io/enable-api-logging" // "false")),		\
 				"--placement-host-address=placement:50006",															\
 				"--resources-path=/components"																		\
